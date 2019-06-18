@@ -1,7 +1,7 @@
 <?php
 /*
     Plugin Name: Traum 头条
-    Plugin URI: https://www.jysafe.cn/3571.air
+    Plugin URI: https://www.jysafe.cn/3632.air
     Description: 同步文章到新浪头条
     Author: Traum
     Version: 1.0.0

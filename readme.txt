@@ -1,6 +1,6 @@
 === Traum Toutiao ===
 Contributors: jysafe 
-Donate link: http://www.jysafe.cn/
+Donate link: https://www.jysafe.cn
 Tags: Sina Toutiao,头条
 Requires at least: 5.0
 Tested up to: 5.0
