@@ -11,6 +11,15 @@ function traum_toutiao_menu() {
         'traum_toutiao_setting_page_dispaly',
         $icon_url
     );
+    
+    add_submenu_page(
+        'traum_toutiao_setting_page',
+        '头条更新',
+        '头条更新',
+        'administrator',
+        'traum_toutiao_setting_update',
+        'traum_toutiao_setting_update_dispaly'
+    );
 }
 add_action('admin_menu','traum_toutiao_menu');
 
@@ -148,10 +157,15 @@ function traum_toutiao_setting_page_dispaly() {
     <?php
     if (! isset($_POST['traum_toutiao_setting_noncename']) || ! wp_verify_nonce($_POST['traum_toutiao_setting_noncename'], plugin_basename(__FILE__)))
         return;
-    if($_POST['traum_toutiao_setting_log_delete'] == 'log_delete')traum_toutiao_log('delete');
+    if(sanitize_text_field($_POST['traum_toutiao_setting_log_delete']) == 'log_delete')traum_toutiao_log('delete');
 }
 // end sandbox_general_options_callback
 
+function traum_toutiao_setting_update_dispaly(){
+    global $version;
+    '<h2>Traum Captcha Update Page</h2>';
+    traum_toutiao_update($version);
+}
 
 function traum_toutiao_setting_check_box_callback($args) {
     // Note the ID and the name attribute of the element match that of the ID in the call to add_settings_field

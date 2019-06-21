@@ -1,6 +1,6 @@
 === Traum Toutiao ===
 Contributors: jysafe 
-Donate link: https://www.jysafe.cn
+Donate link: https://www.jysafe.cn/
 Tags: Sina Toutiao,头条
 Requires at least: 5.0
 Tested up to: 5.0
@@ -30,7 +30,7 @@ A：没有，最敏感权限是向数据库写入验证码数据。
 2.为什么使用 "https://api.weibo.com/proxy/article/publish.json"?
 A:我使用它发送文章到新浪。
 
-3.为什么使用 "https://api.jysafe.cn/traum_update/?type=toutiao"?
+3.为什么使用 "https://api.jysafe.cn/update/?type=toutiao"?
 A:插件用户使用它去获得最新版本信息，包括测试版本。
 
 EN:
@@ -40,7 +40,7 @@ A：No，it just write some captcha questions into the database.
 2.Why I use "https://api.weibo.com/proxy/article/publish.json"?
 A:I use it to publish articles to sina.
 
-3.Why I use "https://api.jysafe.cn/traum_update/?type=toutiao"?
+3.Why I use "https://api.jysafe.cn/update/?type=toutiao"?
 A:Users who use this plugin can use it to get the latest version including the test version.
 
 == Upgrade Notice == 

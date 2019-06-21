@@ -12,8 +12,8 @@
 if (!defined('Traum_Toutiao_DIR')) {
     define('Traum_Toutiao_DIR', plugin_dir_path(__FILE__));
 }
-
 $version = '1.0.0';
+
 require plugin_dir_path(__FILE__) .'options.php';
 
 add_action('post_submitbox_misc_actions', 'traum_toutiao_publish_metabox_add');
@@ -67,9 +67,9 @@ function traum_toutiao_publish_metabox_add() {
  * 原文地址: http://wuzhuti.cn/2715.html
  */
 function traum_toutiao_publish($post_ID) {
-    if(!get_option('traum_toutiao_setting_check_box_enble'))
-        if ($_POST['traum_toutiao_publish_checkbox'] != 'on')
-            return;
+    if (!get_option('traum_toutiao_setting_check_box_enble'))
+        if (sanitize_text_field($_POST['traum_toutiao_publish_checkbox']) != 'on')
+        return;
     //if (wp_is_post_revision($post_ID))
     //修订版本(更新)不发微博
     $get_post_info = get_post($post_ID);
@@ -96,9 +96,9 @@ function traum_toutiao_publish($post_ID) {
 
         $title = strip_tags($get_post_title);
         //头条的标题
-        $content = get_post($post_ID)->post_content."\r\n原文地址:" . get_permalink($post_ID);
+        $content = get_post($post_ID)->post_content."\r\n原文:<a href=" . get_permalink($post_ID).">点击查看</a>";
         //头条的正文
-        $content = handle_content($content);
+        $content = traum_toutiao_handle_content($content);
         $cover = traum_toutiao_mmimg($post_ID);
         //头条的封面
         $summary = mb_strimwidth(strip_tags(apply_filters('the_content', $get_post_centent)) , 0, 110, '...');
@@ -158,15 +158,15 @@ function traum_catch_that_image($postID) {
 }
 
 //处理content内容
-function handle_content($content) {
-    if (!strpos($content, "<h1>") && strpos($content, "<h2>"))
+function traum_toutiao_handle_content($content) {
+    if (!strpos($content, "<h1>") && strpos($content, "<h2>") && (strpos($content, "<h3>") || strpos($content, "<h4>") || strpos($content, "<h5>") ||strpos($content, "<h6>"))) {
         $content = str_replace("<h2>", "<h1>", $content);
+        $content = str_replace("</h2>", "</h1>", $content);
+    }
 
     $content = preg_replace("/\[\/?[a-z]+_[a-z]+\]/","",$content);
     $content = str_replace(array("<br>", "<br />"), "&lt;br&gt;", $content);
     $content = str_replace(array("\r\n", "\r", "\n"), "<br>", $content);
-    
-    //traum_toutiao_loginfo($content);
     return $content;
 }
 
@@ -174,21 +174,18 @@ function handle_content($content) {
 function traum_toutiao_loginfo($msg) {
     $logFile = Traum_Toutiao_DIR.'log/traum_weibo.log';
     // 日志路径
-    date_default_timezone_set('Asia/Shanghai');
+    date_default_timezone_set(get_option("TIMEZONE_STRING"));
     file_put_contents($logFile, date('[Y-m-d H:i:s]: ') . $msg . PHP_EOL, FILE_APPEND);
-    //return $msg;
 }
 
 function traum_toutiao_update($ver) {
-    $json = file_get_contents('https://api.jysafe.cn/traum_update/?type=toutiao');
-    $arr = json_decode($json,true);
+    $json = wp_remote_get('https://api.jysafe.cn/update/?type=toutiao');
+    $arr = json_decode(sanitize_text_field($json['body']),true);
 
-    _e('The installed version is：','Traum-toutiao');
-    echo $ver.'<br>';
-    _e('The latest version is：','Traum-toutiao');
-    echo $arr['ver'].'<br>';
-    _e('The update description：','Traum-toutiao');
-    echo $arr['description'].'<br>';
-    _e('The download link：','Traum-toutiao');
-    echo "<a href=".$arr['download'].">".__('Click to download','Traum-toutiao').'</a>';
+    $html = '<br>当前版本：';
+    $html .= $ver.'<br>最新版本：';
+    $html .= $arr['ver'].'<br>更新描述：';
+    $html .= $arr['description'].'<br>下载链接：';
+    $html .= "<a href=".$arr['download'].">点击下载</a>";
+    echo $html;
 }
