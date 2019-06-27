@@ -4,7 +4,7 @@
     Plugin URI: https://www.jysafe.cn/3632.air
     Description: 同步文章到新浪头条
     Author: Traum
-    Version: 1.0.0
+    Version: 1.0.1
     Author URI: https://www.jysafe.cn
     */
 ?>
@@ -12,7 +12,9 @@
 if (!defined('Traum_Toutiao_DIR')) {
     define('Traum_Toutiao_DIR', plugin_dir_path(__FILE__));
 }
-$version = '1.0.0';
+if (!defined('Traum_Toutiao_VER')) {
+    define('Traum_Toutiao_VER', '1.0.1');
+}
 
 require plugin_dir_path(__FILE__) .'options.php';
 
@@ -23,7 +25,28 @@ function traum_toutiao_publish_metabox_add() {
     //wp_nonce_field(plugin_basename(__FILE__), 'traum_toutiao_publish_checkbox_noncename');
     echo '<div class="misc-pub-section"><input type="checkbox" id="traum_toutiao_publish_checkbox" name="traum_toutiao_publish_checkbox" './* checked(1, get_option('traum_toutiao_setting_check_box_enble').*/' />  同时发布头条文章</div>';
 }
+function traum_toutiao_active(){
+    if (false == get_option('traum_toutiao_setting_check_box_enble')) {
+        add_option('traum_toutiao_setting_check_box_enble');
+    }
+    if (false == get_option('traum_toutiao_setting_appkey')) {
+        add_option('traum_toutiao_setting_appkey');
+    }
+    if (false == get_option('traum_toutiao_setting_account')) {
+        add_option('traum_toutiao_setting_account');
+    }
+    if (false == get_option('traum_toutiao_setting_password')) {
+        add_option('traum_toutiao_setting_password');
+    }
+    if (false == get_option('traum_toutiao_setting_cover')) {
+        add_option('traum_toutiao_setting_cover');
+    }
+    if (false == get_option('traum_toutiao_setting_log_enble')) {
+        add_option('traum_toutiao_setting_log_enble');
+    }
 
+}
+register_activation_hook( __FILE__, 'traum_toutiao_active' );
 /* 写入数据*/
 //add_action( 'save_post', 'traum_toutiao_save_publish_checkbox' );
 /* 文章保存时，保存我们的自定义数据*/

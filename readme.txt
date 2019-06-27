@@ -3,7 +3,7 @@ Contributors: jysafe
 Donate link: https://www.jysafe.cn/
 Tags: Sina Toutiao,头条
 Requires at least: 5.0
-Tested up to: 5.0
+Tested up to: 5.2.2
 Stable tag: 4.3
 Requires PHP: 5.5 
 License: GPLv2 or later
@@ -11,9 +11,10 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-CN: 这是一个可以将你的文章同步至新浪头条的插件
+CN: 
+这是一个可以将你的文章同步至新浪头条的插件
 感谢无主题博客的核心代码，链接:http://wuzhuti.cn/2715.html
-    To Do:增加延时发布功能，增加自定义导语功能
+To Do:增加延时发布功能，增加自定义导语功能
     
 == Installation ==
 CN:
@@ -45,10 +46,10 @@ A:Users who use this plugin can use it to get the latest version including the t
 
 == Upgrade Notice == 
 CN:
-1.0.0   初始版本
+1.0.1   增加卸载功能，优化代码
 
 == Screenshots == 
-1.none
+1. 设置页面
 
 == Changelog ==
 CN:

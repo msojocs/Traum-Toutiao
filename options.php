@@ -24,10 +24,6 @@ function traum_toutiao_menu() {
 add_action('admin_menu','traum_toutiao_menu');
 
 function traum_toutiao_plugin_options() {
-    if (false == get_option('traum_toutiao_display_options')) {
-        add_option('traum_toutiao_display_options');
-    }
-
     //setting
     add_settings_section(
         'traum_toutiao_setting_page',                         // ID used to identify this section and with which to register options
@@ -162,9 +158,8 @@ function traum_toutiao_setting_page_dispaly() {
 // end sandbox_general_options_callback
 
 function traum_toutiao_setting_update_dispaly(){
-    global $version;
     '<h2>Traum Captcha Update Page</h2>';
-    traum_toutiao_update($version);
+    traum_toutiao_update(Traum_Toutiao_VER);
 }
 
 function traum_toutiao_setting_check_box_callback($args) {
