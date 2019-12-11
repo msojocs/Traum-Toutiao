@@ -11,15 +11,6 @@ function traum_toutiao_menu() {
         'traum_toutiao_setting_page_dispaly',
         $icon_url
     );
-    
-    add_submenu_page(
-        'traum_toutiao_setting_page',
-        '头条更新',
-        '头条更新',
-        'administrator',
-        'traum_toutiao_setting_update',
-        'traum_toutiao_setting_update_dispaly'
-    );
 }
 add_action('admin_menu','traum_toutiao_menu');
 
@@ -157,11 +148,6 @@ function traum_toutiao_setting_page_dispaly() {
 }
 // end sandbox_general_options_callback
 
-function traum_toutiao_setting_update_dispaly(){
-    '<h2>Traum Captcha Update Page</h2>';
-    traum_toutiao_update(Traum_Toutiao_VER);
-}
-
 function traum_toutiao_setting_check_box_callback($args) {
     // Note the ID and the name attribute of the element match that of the ID in the call to add_settings_field
     $html = '<input type="checkbox" id="traum_toutiao_setting_check_box_enble" name="traum_toutiao_setting_check_box_enble" value="1" ' . checked(1, get_option('traum_toutiao_setting_check_box_enble'), false) . '/>';
@@ -220,7 +206,37 @@ function traum_toutiao_log($action) {
             //feof() check if file read end EOF
             while (!feof($file)) {
                 //fgets() Read row by row
-                echo fgets($file). "<br />";
+                $temp = fgets($file);
+                if(strpos($temp, 'error_code'))
+                {
+                    $array = json_decode($temp, true);
+                    switch($array['error_code'])
+                    {
+                        case 10001:
+                            echo '新浪系统错误';
+                            break;
+                        case 11001:
+                            echo '发布过于频繁';
+                            break;
+                        case 11002:
+                            echo '微博发送失败';
+                            break;
+                        case 11003:
+                            echo '文章关联微博失败';
+                            break;
+                        case 10008:
+                            echo '参数不符合要求：'.$array['error'];
+                            break;
+                        case 21301:
+                            echo '账号信息似乎出错了~';
+                            break;
+                        default:
+                            echo '未知错误';
+                            break;
+                    }
+                }
+                else
+                    echo '<br />'.$temp. "<br />";
             }
             fclose($file);
         }

@@ -1,10 +1,10 @@
-=== Traum Toutiao ===
+=== 新浪微博头条 ===
 Contributors: jysafe 
-Donate link: https://www.jysafe.cn/
-Tags: Sina Toutiao,头条
+Donate link: https://www.jysafe.cn/donate.html
+Tags: Sina,Toutiao,Sina Toutiao,新浪头条,新浪,头条
 Requires at least: 5.0
-Tested up to: 5.2.2
-Stable tag: 4.3
+Tested up to: 5.3
+Stable tag: 1.0.2
 Requires PHP: 5.5 
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -46,11 +46,20 @@ A:Users who use this plugin can use it to get the latest version including the t
 
 == Upgrade Notice == 
 CN:
-1.0.1   增加卸载功能，优化代码
+1.0.2   优化日志功能
+EN:
+1.0.2   Optimize the log function
 
 == Screenshots == 
 1. 设置页面
 
 == Changelog ==
 CN:
-1.0.0     初始版本
+1.0.2   优化日志功能
+1.0.1   增加卸载功能，优化代码
+1.0.0   初始版本
+
+EN:
+1.0.2   Optimize the log function
+1.0.1   Add uninstall function, Optimize the code
+1.0.0   first version

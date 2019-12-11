@@ -1,6 +1,6 @@
 <?php
 /*
-    Plugin Name: Traum 头条
+    Plugin Name: Traum 新浪头条
     Plugin URI: https://www.jysafe.cn/3632.air
     Description: 同步文章到新浪头条
     Author: Traum
@@ -11,9 +11,6 @@
 <?php
 if (!defined('Traum_Toutiao_DIR')) {
     define('Traum_Toutiao_DIR', plugin_dir_path(__FILE__));
-}
-if (!defined('Traum_Toutiao_VER')) {
-    define('Traum_Toutiao_VER', '1.0.1');
 }
 
 require plugin_dir_path(__FILE__) .'options.php';
@@ -117,17 +114,17 @@ function traum_toutiao_publish($post_ID) {
         $status = '【' . strip_tags($get_post_title) . '】 ' . mb_strimwidth(strip_tags(apply_filters('the_content', $get_post_centent)) , 0, 132, ' ');
         $api_url = 'https://api.weibo.com/proxy/article/publish.json';
 
-        $title = strip_tags($get_post_title);
         //头条的标题
-        $content = get_post($post_ID)->post_content."\r\n原文:<a href=" . get_permalink($post_ID).">点击查看</a>";
+        $title = strip_tags($get_post_title);
         //头条的正文
+        $content = get_post($post_ID)->post_content."\r\n原文:<a href=" . get_permalink($post_ID).">点击查看</a>";
         $content = traum_toutiao_handle_content($content);
-        $cover = traum_toutiao_mmimg($post_ID);
         //头条的封面
-        $summary = mb_strimwidth(strip_tags(apply_filters('the_content', $get_post_centent)) , 0, 110, '...');
+        $cover = traum_toutiao_mmimg($post_ID);
         //头条的导语
-        $text = mb_strimwidth(strip_tags(apply_filters('the_content', $get_post_centent)) , 0, 110, $status).$keywords.'原文地址:' . get_permalink($post_ID);
+        $summary = mb_strimwidth(strip_tags(apply_filters('the_content', $get_post_centent)) , 0, 110, '...');
         //微博的内容
+        $text = mb_strimwidth(strip_tags(apply_filters('the_content', $get_post_centent)) , 0, 110, $status).$keywords.'原文地址:' . get_permalink($post_ID);
 
         $body = array(
             'title' => $title,
@@ -140,11 +137,13 @@ function traum_toutiao_publish($post_ID) {
 
         $headers = array('Authorization' => 'Basic ' . base64_encode("$username:$pass"));
         $result = $request->post($api_url, array('body' => $body,'headers' => $headers));
-        if (get_option('traum_toutiao_setting_log_enble'))traum_toutiao_loginfo($result['body']);
+        $res = "\r\n===============LOG START===============\r\n\r\n--------Picture:--------\r\n{$body['cover']} \r\n\r\n--------KEY Words:--------\r\n$keywords\r\n\r\n--------Sina Response:---------\r\n{$result['body']}===============LOG END===============";
+        if (get_option('traum_toutiao_setting_log_enble'))
+            traum_toutiao_loginfo($res);
     }
 }
-add_action('publish_post', 'traum_toutiao_publish', 0);
 //给发布文章增加一个分享微博头条文章的动作
+add_action('publish_post', 'traum_toutiao_publish', 0);
 
 //获取封面
 function traum_toutiao_mmimg($postID) {
@@ -190,25 +189,14 @@ function traum_toutiao_handle_content($content) {
     $content = preg_replace("/\[\/?[a-z]+_[a-z]+\]/","",$content);
     $content = str_replace(array("<br>", "<br />"), "&lt;br&gt;", $content);
     $content = str_replace(array("\r\n", "\r", "\n"), "<br>", $content);
+    $content = str_replace('code>', "b>", $content);
     return $content;
 }
 
 //写日志函数
 function traum_toutiao_loginfo($msg) {
     $logFile = Traum_Toutiao_DIR.'log/traum_weibo.log';
-    // 日志路径
+    //日志路径
     date_default_timezone_set(get_option("TIMEZONE_STRING"));
     file_put_contents($logFile, date('[Y-m-d H:i:s]: ') . $msg . PHP_EOL, FILE_APPEND);
-}
-
-function traum_toutiao_update($ver) {
-    $json = wp_remote_get('https://api.jysafe.cn/update/?type=toutiao');
-    $arr = json_decode(sanitize_text_field($json['body']),true);
-
-    $html = '<br>当前版本：';
-    $html .= $ver.'<br>最新版本：';
-    $html .= $arr['ver'].'<br>更新描述：';
-    $html .= $arr['description'].'<br>下载链接：';
-    $html .= "<a href=".$arr['download'].">点击下载</a>";
-    echo $html;
 }
