@@ -4,7 +4,7 @@
     Plugin URI: https://www.jysafe.cn/3632.air
     Description: 同步文章到新浪头条
     Author: Traum
-    Version: 1.0.1
+    Version: 1.0.2
     Author URI: https://www.jysafe.cn
     */
 ?>
